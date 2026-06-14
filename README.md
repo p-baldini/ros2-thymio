@@ -1,7 +1,7 @@
 # ROS2—Thymio-II interaction
 
 This repository contains some information to use the Thymio-II robot with ROS2.
-The procedure have been tested on a Manjaro linux distribution with ROS2 Jazzy Jalisco.
+The procedure have been tested on a Manjaro linux distribution with ROS2 Jazzy Jalisco, and seems to work both for cable-connected and dongle-connected robots.
 
 ## Setup steps
 
