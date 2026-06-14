@@ -70,3 +70,4 @@ $ ros2 launch PACKAGE_NAME FILE_NAME.launch device:="ser:name=Thymio-II"
 - If asebaros returns the error `Connection failed (0)` check that the Thymio-II is turned on.
 - If asebaros returns the error `Connection failed (13)` you probably don't have the rights to used the device; in this case, you can run the following command `sudo chmod 777 /dev/ttyACM0` (note that the device name may differ).
 - If specifying the name of the robot (i.e., `device:="ser:name=Thymio-II"`) does not permit finding the device, you can try to specify directly the path with `device:="ser:device=/dev/ttyACM0"`.
+- If the robot behavior differs from what you code, ensure that the path variable in the .launch file points to the correct script.
