@@ -1,0 +1,8 @@
+<!DOCTYPE aesl-source>
+<network>
+  <!--node thymio-II-->
+  <node name="thymio-II">
+    # PUT YOUR CODE HERE!
+  </node>
+
+</network>
