@@ -14,6 +14,7 @@
     <param name="nodes">
       <param name="others">
         <param name="accept" value="false"/>
+        <param name="prefix" value="node_"/>
       </param>
       <param name="thymio">
         <param name="type" value="thymio-II"/>
