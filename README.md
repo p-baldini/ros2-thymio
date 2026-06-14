@@ -65,6 +65,11 @@ $ colcon build --merge-install
 $ ros2 launch PACKAGE_NAME FILE_NAME.launch device:="ser:name=Thymio-II"
 ```
 
+## PC—Thymio-II interaction
+
+You can control the Thymio-II directly from the PC by using ROS2.
+You can find some examples on how to do it at [this link](https://github.com/jeguzzi/ros-aseba/blob/9f96bec7524c4c337110acf129a5c81da34345e7/docs/_sources/examples.rst.txt#L61).
+
 ## Troubleshoot
 
 - If asebaros returns the error `Connection failed (0)` check that the Thymio-II is turned on.
