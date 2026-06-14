@@ -3,6 +3,11 @@
 This repository contains some information to use the Thymio-II robot with ROS2.
 The procedure have been tested on a Manjaro linux distribution with ROS2 Jazzy Jalisco, and seems to work both for cable-connected and dongle-connected robots.
 
+This readme file is organized as follows:
+1. [Setup steps](#setup-steps)
+2. [PC—Thymio-II interaction](#pcthymio-ii-interaction)
+3. [Troubleshoot](#troubleshoot)
+
 ## Setup steps
 
 1\. Install conda:
