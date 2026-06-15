@@ -1,0 +1,7 @@
+[submodule "ros-aseba"]
+	path = ros-aseba
+	url = https://github.com/jeguzzi/ros-aseba.git
+	branch = ros2
+[submodule "dashel"]
+	path = dashel
+	url = https://github.com/aseba-community/dashel.git
