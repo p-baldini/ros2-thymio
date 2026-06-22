@@ -1,0 +1,18 @@
+<!DOCTYPE aesl-source>
+<network>
+  <!--list of global events-->
+  <event size="2" name="control"/>
+  <event size="7" name="perception"/>
+
+  <!--node thymio-II-->
+  <node name="thymio-II">
+    motor.left.target = 0
+    motor.right.target = 0
+    call leds.top(32,32,32)
+    onevent prox
+      emit perception prox.horizontal
+    onevent control
+      motor.left.target = event.args[1]
+      motor.right.target = event.args[2]
+  </node>
+</network>

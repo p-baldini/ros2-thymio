@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.5)
-project(example_package)
+cmake_minimum_required(VERSION 4.0)
+project(example_client)
 
 find_package(ament_cmake REQUIRED)
 find_package(asebaros REQUIRED)
