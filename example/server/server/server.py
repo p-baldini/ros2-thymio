@@ -39,7 +39,7 @@ class Master(rclpy.node.Node):
         if any([v > 1000 for v in self.perception[0:5]]):
             msg.data = [100, -100]
         else:
-            msg.data = [0, 0]
+            msg.data = [100, 100]
 
         self.get_logger().info(f'Control: {msg.data}')
 
