@@ -1,7 +1,8 @@
 # ROS2—Thymio-II interaction
 
 This repository contains some information to use the Thymio-II robot with ROS2.
-The procedure have been tested on a Manjaro linux distribution with ROS2 Jazzy Jalisco, and seems to work both for cable-connected and dongle-connected robots.
+The procedure have been tested on a Arch Linux distribution and seems to work both for cable-connected and dongle-connected robots.
+Unfortunately, the procedure does not seems to work under MacOS due to the impossibility of accessing the port from inside a container.
 
 This readme file is organized as follows:
 1. [Setup steps](#setup-steps)
@@ -10,70 +11,64 @@ This readme file is organized as follows:
 
 ## Setup steps
 
-1\. Install conda:
+1\. Install Docker:
 
 ```
-$ curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-$ bash ./Miniconda3-latest-Linux-x86_64.sh
+$ sudo pacman -S docker
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+$ sudo usermod -aG docker $USER # add your user to the docker group to run Docker commands without sudo
 ```
 
-2\. Create the conda environment, add packages channels, and install required packages:
+2\. Build the docker image:
 
 ```
-$ source ~/.bashrc
-$ conda create -n ros_env python=3.12.13
-$ conda activate ros_env
-$ conda config --env --add channels conda-forge
-$ conda config --env --add channels robostack
-$ conda config --env --add channels robostack-jazzy
-$ conda install ros-jazzy-desktop-full
-$ conda install libudev
+$ docker buildx build --no-cache --debug -t pbaldini/ros-aseba:lyrical .
 ```
 
-3\. Clone and install the ros-aseba package:
+3\. Start the docker container with access to the connected devices:
 
 ```
-$ git clone https://github.com/jeguzzi/ros-aseba.git --branch ros2 --depth=1
-$ source ~/miniconda3/envs/ros_env/setup.zsh
-$ colcon build --merge-install
-$ source install/setup.zsh
+$ docker run \                      # start a new container
+    --rm \                          # the container is removed after termination
+    -it \                           # start the container in interactive mode
+    --privileged \                  # the container has access to all the devices connected to the system (potential vulnerability issue)
+    -v `pwd`:/ros_ws/src \          # show the current directory in the container at the specified path
+    --workdir /ros_ws/src \         # set the work directory insider the container as the mirror of this launch directory
+    pbaldini/ros-aseba:lyrical \    # launch the ros-aseba foxy image
+    bash                            # use the bash terminal as entrypoint
 ```
 
-4\. Install the dashel package:
-
-```
-$ git clone https://github.com/aseba-community/dashel.git --depth=1
-$ colcon build --merge-install --cmake-args -DCMAKE_POLICY_VERSION_MINIMUM=3.5
-```
-
-5\. Identify the port at which the Thymio-II is connected (from now on we will assume /dev/ttyACM0):
-
-```
-$ sudo dmesg
-```
-
-6\. If you are not root, you may want to get access to the device (note that this is potentially an unsafe approach):
-
-```
-$ sudo chmod 777 /dev/ttyACM0
-```
-
-7\. Install your code package to be launched by ROS2:
+4\. Install your code package to be launched by ROS2:
 
 ```
 $ colcon build --merge-install
+$ source install/setup.sh
 ```
 
-8\. Launch your ROS2 package:
+5\. Launch your ROS2 package:
 
 ```
-$ ros2 launch PACKAGE_NAME FILE_NAME.launch device:="ser:name=Thymio-II"
+$ ros2 launch PACKAGE_NAME FILE_NAME.launch
 ```
 
 ## PC—Thymio-II interaction
 
 You can control the Thymio-II directly from the PC by using ROS2.
-You can find some examples on how to do it at [this link](https://github.com/jeguzzi/ros-aseba/blob/9f96bec7524c4c337110acf129a5c81da34345e7/docs/_sources/examples.rst.txt#L61).
+You can find some examples on how to do it via cli at [this link](https://github.com/jeguzzi/ros-aseba/blob/9f96bec7524c4c337110acf129a5c81da34345e7/docs/_sources/examples.rst.txt#L61), and on how to do it programmatically in the `example` folder.
+In any case, the first step will be to open another shell in the container:
+
+```
+$ docker exec -it CONTAINER_NAME bash
+$ source install/setup.sh
+```
+
+You can now interact with the node, for example by running:
+
+```
+$ ros2 topic echo /node_51214/aseba/description
+$ ros2 topic pub -r 1 /node_51214/aseba/events/message asebaros_msgs/Event '{data:  [100]}'
+```
 
 ## Troubleshoot
 
